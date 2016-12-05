@@ -1,4 +1,8 @@
-CFLAGS=-ggdb -Wall
+CFLAGS+=-ggdb -Wall
+ifeq ($(COVERAGE),Y)
+	CFLAGS+=--coverage -O0
+	LDFLAGS+=--coverage
+endif
 
 .PHONY: clean all tests
 
@@ -8,7 +12,7 @@ clean:
 		rm -f *.o libparser.a testparse core* imessage* omessage*
 
 testparse: libparser.a testparse.o
-		g++ testparse.o -L . -l parser -o testparse
+		g++ testparse.o -L . -l parser -o testparse ${LDFLAGS}
 
 libparser.a: field.o fldformat.o parser.o builder.o frmiterator.o
 		ar rcs libparser.a field.o fldformat.o parser.o builder.o frmiterator.o
