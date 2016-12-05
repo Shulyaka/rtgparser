@@ -15,4 +15,4 @@ env:
 before_install:
   - pip install --user cpp-coveralls
 after_success:
-  - coveralls
+  - coveralls --exclude testparse.cpp
