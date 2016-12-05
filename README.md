@@ -1,4 +1,4 @@
-# rtgparser [![Build Status](https://travis-ci.org/Shulyaka/rtgparser.svg?branch=master)](https://travis-ci.org/Shulyaka/rtgparser)
+# rtgparser [![Build Status](https://travis-ci.org/Shulyaka/rtgparser.svg?branch=master)](https://travis-ci.org/Shulyaka/rtgparser) [![Coverity Scan Build Status](https://scan.coverity.com/projects/11063/badge.svg)](https://scan.coverity.com/projects/shulyaka-rtgparser)
 Binary format parser
 
 RTGparser is a C++ parsing and serializing library for binary formats that can be described with regular tree grammar.
