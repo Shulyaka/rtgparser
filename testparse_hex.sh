@@ -2,7 +2,7 @@
 
 if [ $# -eq 1 ]
 then
-	cat $1 | $0
+	$0 < $1
 	exit $?
 fi
 
