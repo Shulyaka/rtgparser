@@ -1,5 +1,8 @@
 language: cpp
 script: make COVERAGE=Y
+compiler:
+  - clang
+  - gcc
 addons:
   coverity_scan:
     project:
