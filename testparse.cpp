@@ -125,11 +125,11 @@ int main(int argc, char **argv)
 
 	message.reset_altformat();
 
-	if(debug)
-		printf("Building %s, estimated length: %lu\n", message.get_description().c_str(), (unsigned long)message.get_blength());
-
 	try
 	{
+		if(debug)
+			printf("Building %s, estimated length: %lu\n", message.get_description().c_str(), (unsigned long)message.get_blength());
+
 		msglen2=message.serialize(msgbuf2);
 	}
 	catch(const exception& e)

@@ -6,7 +6,9 @@
 #define ITPAR_CONST iterator_type_const, reference_type_const, iterator_type_const, reference_type_const, iterator_type_nonconst, reference_type_nonconst
 
 template<ITMPL>
-frmiterator<ITPAR>::frmiterator(void)
+frmiterator<ITPAR>::frmiterator(void) :
+	wildcard(NULL),
+	curnum(0)
 {
 	return;
 }

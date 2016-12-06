@@ -27,8 +27,6 @@ size_t field::get_flength(void)
 	int bitmap_found=-1;
 	fldformat tmpfrm;
 
-	flength=data.length();
-
 	if(frm->lengthFormat==fldformat::fll_ber)
 		if(frm->dataFormat==fldformat::fld_bcdl || frm->dataFormat==fldformat::fld_bcdr || frm->dataFormat==fldformat::fld_hex)
 			lenlen=(flength+1)/2>127?2:1;

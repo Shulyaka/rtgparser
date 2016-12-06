@@ -413,8 +413,8 @@ class flditerator: public std::iterator<std::bidirectional_iterator_tag, std::pa
 	flditerator(iterator_type mapit, map_type& sf) : it(mapit), subfields(&sf) {};
 
 	public:
-	flditerator(void) {};
-	flditerator(const flditerator &other) : it(other.it) {};
+	flditerator(void) : it(), subfields(NULL) {};
+	flditerator(const flditerator &other) : it(other.it), subfields(other.subfields) {};
 	~flditerator(void) {};
 
 	flditerator& operator=(const flditerator &other) {it=other.it; subfields=other.subfields; return *this;};
