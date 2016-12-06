@@ -657,12 +657,12 @@ size_t field::build_bcdr(const string::const_iterator &from, string &to, size_t 
 
 size_t field::build_bcdl(const string::const_iterator &from, string &to, size_t len, char fillChar)
 {
-	unsigned char t, tmpc=0;
 	size_t u=len/2*2==len?0:1;
 	size_t separator_found=0;
 
 	for(size_t i=0; i<(len+1)/2; i++)
 	{
+		unsigned char t, tmpc=0;
 		t=(unsigned char)from[i*2];
 		if(17<len && len<38 && !separator_found && (t=='^' || t=='=' || t=='D'))     //making one exception for track2
 		{

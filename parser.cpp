@@ -164,7 +164,7 @@ size_t field::parse_field(const char *buf, size_t maxlength)
 		catch(const need_more_data& e)
 		{
 			if(debug)
-				printf("Please retry with length %ld: %s\n", e.howmuch(), e.what());
+				printf("Please retry with length %lu: %s\n", (unsigned long)e.howmuch(), e.what());
 
 			if(minlength==0 || e.howmuch()<minlength)
 				minlength=e.howmuch();
@@ -370,7 +370,7 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 							for(size_t i=sf(curnum).blength+1; i<flength+lenlen-pos+1; i=-sflen)
 							{
 								if(debug)
-									printf("trying pos %lu length %lu/%lu for %s\n", pos, i, flength+lenlen-pos, curfrm->get_description().c_str());  //TODO: remove curfrm
+									printf("trying pos %lu length %lu/%lu for %s\n", (unsigned long)pos, (unsigned long)i, (unsigned long)flength+lenlen-pos, curfrm->get_description().c_str());  //TODO: remove curfrm
 								sf(curnum).blength=0;
 								try
 								{
@@ -379,7 +379,7 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 									if((size_t)sflen<i)
 									{
 										if(debug)
-											printf("Parsed successfully but with less length of %ld/%lu\n", sflen, i);
+											printf("Parsed successfully but with less length of %ld/%lu\n", sflen, (unsigned long)i);
 										sflen=0;
 									}
 									break;
@@ -573,7 +573,7 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 	blength=lenlen+newblength;
 
 	if(debug && !data.empty() && frm->dataFormat!=fldformat::fld_subfields)
-		printf("%s\t(%lu/%lu): \"%s\"\n", frm->get_description().c_str(), flength, blength, data.c_str());
+		printf("%s\t(%lu/%lu): \"%s\"\n", frm->get_description().c_str(), (unsigned long)flength, (unsigned long)blength, data.c_str());
 
 	return lenlen+newblength;
 }
@@ -591,13 +591,13 @@ size_t field::parse_ebcdic(const char *from, string &to, size_t len)
 
 size_t field::parse_bcdr(const char *from, string &to, size_t len, char fillChar)
 {
-	unsigned char t;
-	size_t u=len/2*2==len?0:1;
-	size_t separator_found=0;
-
 	for(size_t i=0; i<(len+1)/2; i++)
 	{
-		if(i!=0 || u==0)
+		unsigned char t;
+		const bool u=(len/2*2==len);
+		size_t separator_found=0;
+
+		if(i || u)
 		{
 			t=((unsigned char)from[i]) >> 4;
 			if(17<len && len<38 && !separator_found && t==0xD)     //making one exception for track2
@@ -630,12 +630,12 @@ size_t field::parse_bcdr(const char *from, string &to, size_t len, char fillChar
 
 size_t field::parse_bcdl(const char *from, string &to, size_t len, char fillChar)
 {
-	unsigned char t;
-	size_t u=len/2*2==len?0:1;
-	size_t separator_found=0;
-
 	for(size_t i=0; i<(len+1)/2; i++)
 	{
+		unsigned char t;
+		const bool u=(len/2*2==len);
+		size_t separator_found=0;
+
 		t=((unsigned char)from[i]) >> 4;
 		if(17<len && len<38 && !separator_found && t==0xD)     //making one exception for track2
 		{
@@ -647,7 +647,7 @@ size_t field::parse_bcdl(const char *from, string &to, size_t len, char fillChar
 		else
 			to.push_back('0'+t);
 
-		if(u==0 || i!=(len+1)/2-1)
+		if(u || i!=(len+1)/2-1)
 		{
 			t=((unsigned char)from[i]) & 0x0F;
 			if(17<len && len<38 && !separator_found && t==0xD)     //making one exception for track2
@@ -669,12 +669,12 @@ size_t field::parse_bcdl(const char *from, string &to, size_t len, char fillChar
 
 size_t field::parse_hex(const char *from, string &to, size_t len, char fillChar)
 {
-	unsigned char t;
-	size_t u=len/2*2==len?0:1;
-
 	for(size_t i=0; i<(len+1)/2; i++)
 	{
-		if(i!=0 || u==0)
+		unsigned char t;
+		const bool u=(len/2*2==len);
+
+		if(i || u)
 		{
 			t=((unsigned char)from[i]) >> 4;
 			if (t > 9)

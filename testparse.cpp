@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 	message.reset_altformat();
 
 	if(debug)
-		printf("Building %s, estimated length: %lu\n", message.get_description().c_str(), message.get_blength());
+		printf("Building %s, estimated length: %lu\n", message.get_description().c_str(), (unsigned long)message.get_blength());
 
 	try
 	{
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
 	}
 
 	if(debug)
-		printf("%s built. Length: %lu/%lu\n", message.get_description().c_str(), msglen2, msgbuf2.length());
+		printf("%s built. Length: %lu/%lu\n", message.get_description().c_str(), (unsigned long)msglen2, (unsigned long)msgbuf2.length());
 
 	if(msglen2!=msglen)
 	{

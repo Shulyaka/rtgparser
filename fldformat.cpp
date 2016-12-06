@@ -293,7 +293,7 @@ unsigned int fldformat::load_format(const string &filename)	//TODO: auto set max
 		if(line.empty())
 			continue;
 
-		j=sscanf(line.c_str(), "%s %s %[][a-zA-Z0-9 .,/;:'\"\\|?!@#$%^&*(){}<>_+=-]", number, format, descr);
+		j=sscanf(line.c_str(), "%255s %255s %255[][a-zA-Z0-9 .,/;:'\"\\|?!@#$%^&*(){}<>_+=-]", number, format, descr);
 		if(number[0]=='#')
 			continue;
 		if(j==2)

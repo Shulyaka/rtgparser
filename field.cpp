@@ -38,14 +38,19 @@ field::field(const std::string &filename, const string &str)
 }
 
 //copy constructor
-field::field(const field &from)
+field::field(const field &from):
+	data(from.data),
+	start(from.start),
+	blength(from.blength),
+	flength(from.flength),
+	frm(from.frm),
+	firstfrm(from.firstfrm),
+	deletefrm(from.deletefrm),
+	subfields(from.subfields),
+	altformat(from.altformat),
+	tagmap(from.tagmap),
+	tag(from.tag)
 {
-	data=from.data;
-	start=from.start;
-	blength=from.blength;
-	flength=from.flength;
-	deletefrm=from.deletefrm;
-	frm=from.frm;
 	if(deletefrm)
 	{
 		firstfrm=new fldformat(*from.firstfrm);
@@ -54,12 +59,6 @@ field::field(const field &from)
 			if(tmpfrm==from.frm)
 				break;
 	}
-	else
-		firstfrm=from.firstfrm;
-	subfields=from.subfields;
-	altformat=from.altformat;
-	tagmap=from.tagmap;
-	tag=from.tag;
 }
 
 field::~field(void)
@@ -204,7 +203,7 @@ void field::print_message(string numprefix) const
 	printf("%s", frm->get_description().c_str());
 
 	if(!data.empty())
-		printf(" (%lu): \"%s\"\n", flength, data.c_str());
+		printf(" (%lu): \"%s\"\n", (unsigned long)flength, data.c_str());
 	else
 		printf(":\n");
 
