@@ -199,16 +199,16 @@ void fldformat::print_format(string numprefix)
 				switch(tagFormat)
 				{
 					case flt_ebcdic:
-						printf("TLV%luEBCDIC", tagLength);
+						printf("TLV%luEBCDIC", (unsigned long)tagLength);
 						break;
 					case flt_bcd:
-						printf("TLV%luBCD", tagLength);
+						printf("TLV%luBCD", (unsigned long)tagLength);
 						break;
 					case flt_bin:
-						printf("TLV%luBIN", tagLength);
+						printf("TLV%luBIN", (unsigned long)tagLength);
 						break;
 					case flt_ascii:
-						printf("TLV%luASCII", tagLength);
+						printf("TLV%luASCII", (unsigned long)tagLength);
 						break;
 					case flt_ber:
 						printf("TLVBER");
@@ -702,7 +702,7 @@ void fldformat::parseFormat(const char *format, map<string,fldformat> &orphans)
 			dataFormat=fld_bcdl;
 			i++;
 		}
-		else if(format[i]=='L')
+		else if(format[i]=='R')
 			i++;
 
 		if(format[i]=='0'||format[i]=='F')

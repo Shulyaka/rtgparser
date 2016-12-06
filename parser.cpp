@@ -370,7 +370,7 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 							for(size_t i=sf(curnum).blength+1; i<flength+lenlen-pos+1; i=-sflen)
 							{
 								if(debug)
-									printf("trying pos %lu length %lu/%lu for %s\n", (unsigned long)pos, (unsigned long)i, (unsigned long)flength+lenlen-pos, curfrm->get_description().c_str());  //TODO: remove curfrm
+									printf("trying pos %lu length %lu/%lu for %s\n", (unsigned long)pos, (unsigned long)i, (unsigned long)(flength+lenlen-pos), curfrm->get_description().c_str());  //TODO: remove curfrm
 								sf(curnum).blength=0;
 								try
 								{
@@ -462,7 +462,7 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 				if(!parse_failed && pos!=flength+lenlen)
 				{
 					if(debug)
-						printf("Error: Not enough subfield formats (%lu, %lu) for %s\n", pos, flength, frm->get_description().c_str());
+						printf("Error: Not enough subfield formats (%lu, %lu) for %s\n", (unsigned long)pos, (unsigned long)flength, frm->get_description().c_str());
 					parse_failed=1;
 				}
 
@@ -529,7 +529,7 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 					data.push_back('0');
 
 				for(unsigned char j=1; j<64; j++)
-					data.push_back(buf[i*8+j/8] & (1<<(7-j%8)) ? '1':'0');
+					data.push_back((buf[i*8+j/8] & (1<<(7-j%8))) ? '1':'0');
 			}
 			break;
 
@@ -537,7 +537,7 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 		case fldformat::fld_bitstr:
 			data.clear();
 			for(size_t i=0; i<flength;i++)
-				data.push_back(buf[lenlen + i/8] & (1<<(7-i%8)) ? '1':'0');
+				data.push_back((buf[lenlen + i/8] & (1<<(7-i%8))) ? '1':'0');
 			break;
 
 		case fldformat::fld_ascii:

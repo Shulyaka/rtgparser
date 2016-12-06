@@ -153,14 +153,14 @@ int main(int argc, char **argv)
 	if(msglen2!=msglen)
 	{
 		if(debug)
-			printf("Warning: Total length mismatch (%lu != %lu)\n", msglen, msglen2);
+			printf("Warning: Total length mismatch (%lu != %lu)\n", (unsigned long)msglen, (unsigned long)msglen2);
 	}
 	else
 		for(msglen=0; msglen<msglen2; msglen++)
 			if(msgbuf[msglen]!=msgbuf2[msglen])
 			{
 				if(debug)
-					printf("Warning: Messages don't match (starting from byte %lu)\n", msglen);
+					printf("Warning: Messages don't match (starting from byte %lu)\n", (unsigned long)msglen);
 				break;
 			}
 

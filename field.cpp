@@ -340,7 +340,7 @@ void field::change_format(const fldformat *frmnew)
 {
 	iterator i;
 	vector<const fldformat*> frmold(1, frm);
-	bool sameformat(frm==frmnew);
+	const bool sameformat(frm==frmnew);
 
 	if(!frmnew)
 		throw invalid_argument("No new format provided");
