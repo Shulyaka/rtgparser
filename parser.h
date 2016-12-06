@@ -189,15 +189,15 @@ class field
 
 	//cstdio API:
 	//operator const char*() const { return c_str(); } //removed to avoid ambigous overloads. Use c_str() directly instead.
-	inline int sprintf(const char *format, ...) {va_list args; va_start(args, format); int count=vsprintf(format, args); va_end(args); return count;};
-	inline int sprintf(size_t pos, const char *format, ...) {va_list args; va_start(args, format); int count=vsprintf(pos, format, args); va_end(args); return count;};
-	inline int snprintf(size_t size, const char *format, ...) {va_list args; va_start(args, format); int count=vsnprintf(size, format, args); va_end(args); return count;};
-	inline int snprintf(size_t pos, size_t size, const char *format, ...) {va_list args; va_start(args, format); int count=vsnprintf(pos, size, format, args); va_end(args); return count;};
-	inline int vsprintf(const char *format, va_list ap) {return vsprintf(0, format, ap);};
-	inline int vsprintf(size_t pos, const char *format, va_list ap) {return vsnprintf(pos, get_maxLength(), format, ap);};
-	inline int vsnprintf(size_t size, const char *format, va_list ap) {return vsnprintf(0, size, format, ap);};
+	inline int sprintf(const char *format, ...) {va_list args; va_start(args, format); int count=field::vsprintf(format, args); va_end(args); return count;};
+	inline int sprintf(size_t pos, const char *format, ...) {va_list args; va_start(args, format); int count=field::vsprintf(pos, format, args); va_end(args); return count;};
+	inline int snprintf(size_t size, const char *format, ...) {va_list args; va_start(args, format); int count=field::vsnprintf(size, format, args); va_end(args); return count;};
+	inline int snprintf(size_t pos, size_t size, const char *format, ...) {va_list args; va_start(args, format); int count=field::vsnprintf(pos, size, format, args); va_end(args); return count;};
+	inline int vsprintf(const char *format, va_list ap) {return field::vsprintf(0, format, ap);};
+	inline int vsprintf(size_t pos, const char *format, va_list ap) {return field::vsnprintf(pos, get_maxLength(), format, ap);};
+	inline int vsnprintf(size_t size, const char *format, va_list ap) {return field::vsnprintf(0, size, format, ap);};
 	int vsnprintf(size_t pos, size_t size, const char *format, va_list ap);
-	inline size_t strftime(const char *format, const struct tm *tm) {return strftime(get_maxLength(), format, tm);};
+	inline size_t strftime(const char *format, const struct tm *tm) {return field::strftime(get_maxLength(), format, tm);};
 	size_t strftime(size_t max, const char *format, const struct tm *tm);
 
 	//std::string API:

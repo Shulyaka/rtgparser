@@ -9,7 +9,7 @@ endif
 all: libparser.a testparse tests
 
 clean:
-		rm -f *.o *.gcda *.gcno libparser.a testparse core* imessage* omessage*
+		rm -f *.o *.gcda *.gcno *.gcov libparser.a testparse core* imessage* omessage*
 
 testparse: libparser.a testparse.o
 		g++ testparse.o -L . -l parser -o testparse ${LDFLAGS}
