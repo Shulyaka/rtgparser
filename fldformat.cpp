@@ -185,7 +185,7 @@ void fldformat::print_format(string numprefix)
 						break; // logic error
 				}
 
-		printf("%lu", maxLength);
+		printf("%lu", (unsigned long)maxLength);
 
 		if(addLength)
 			printf("%+ld", addLength);

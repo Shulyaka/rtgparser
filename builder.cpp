@@ -276,7 +276,7 @@ size_t field::build_field_length(string &buf)
 	}
 
 	if(debug && lenlen)
-		printf("build_field_length: %s, lenlen %lu, mlength %lu, total length %lu\n", frm->get_description().c_str(), lenlen, mlength, buf.length());
+		printf("build_field_length: %s, lenlen %lu, mlength %lu, total length %lu\n", frm->get_description().c_str(), (unsigned long)lenlen, (unsigned long)mlength, (unsigned long)buf.length());
 
 	return lenlen;
 }
@@ -598,7 +598,7 @@ size_t field::build_field_alt(string &buf)
 	}
 
 	if(debug)
-		printf("build_field: %s, length %lu, total length %lu\n", frm->get_description().c_str(), newblength, buf.length());
+		printf("build_field: %s, length %lu, total length %lu\n", frm->get_description().c_str(), (unsigned long)newblength, (unsigned long)buf.length());
 
 	return lenlen+newblength;
 }

@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 	}
 
 	if(debug)
-		printf("%s parsed, length: %lu\n", message.get_description().c_str(), message.get_cached_blength());
+		printf("%s parsed, length: %lu\n", message.get_description().c_str(), (unsigned long)message.get_cached_blength());
 
 	message.print_message();
 
