@@ -15,6 +15,7 @@ using namespace std;
 bool debug=false;
 
 int main(int argc, char **argv)
+try
 {
 	fldformat frm;
 	field message(&frm);
@@ -125,11 +126,11 @@ int main(int argc, char **argv)
 
 	message.reset_altformat();
 
+	if(debug)
+		printf("Building %s, estimated length: %lu\n", message.get_description().c_str(), (unsigned long)message.get_blength());
+
 	try
 	{
-		if(debug)
-			printf("Building %s, estimated length: %lu\n", message.get_description().c_str(), (unsigned long)message.get_blength());
-
 		msglen2=message.serialize(msgbuf2);
 	}
 	catch(const exception& e)
@@ -188,4 +189,13 @@ int main(int argc, char **argv)
 
 	return 0;
 }
-
+catch(const exception& e)
+{
+	printf("Error: Unhandled exception: %s\n", e.what());
+	return 9;
+}
+catch(...)
+{
+	printf("Error: Unhandled exception\n");
+	return 9;
+}
