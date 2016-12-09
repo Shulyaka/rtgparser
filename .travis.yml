@@ -18,6 +18,6 @@ matrix:
         - secure: "UlVx1pPJLeNEPGP8sUo1dwWvo/6Wd3lQ1qIxAiEjq+aZIOgUuu9HQof3h5GSF1fjNO+GPQOxfuGntWqQ1W+jcfdhSeuWM+kHatdiJqR2NxdzLJCQvq7fPyZt1MnJADRfmrhbBgP8j/3IYqJ9HLVIHs0rATly7J3n/hElD74hf7s0KKbUffrI+HQO8vL6mK4pydw9Fh4v9cKpb7lnx7lirhNoOWjVlFP630LORtm2khP+D/Tk+2BHcaluy0rAl57/xMrnm0LIlpwCNSG7INEG2sLygvf9nMzbMNyBHNcxXJylfggVt8shNSK0KUXwXfQ7vBJqJCk+UtFdZK2eJMzuQcj6qESxOtDMViMlnigSoIrI/sNjUbgSSNgryoMietyHgKrDSOZ79iQVW6FuUyvAdzEEt/TkeE3p06qG8KqhRuMvY+U86O/wd7YJG94KSaXM2z0HbU8xXn3dOvEC9YRo1peAYV14HMI4H7vp1bLOK+mpHUBtTw4OqndsaqgbzH1mJ6Hze9aDbvXGrcI1IF1iNa3yLkPAfFkXKhBWzZe8sGx784Jg4rzXJ8q/xar4txr8H8vJuq6yAkyKJkS1JlhVEueko4O5/5oNJE2BtRavD0M/zTDayYecTJ3+MQ7D6HykWYn1bd2kyFcuhhDa/w2T8a22e/iX6ryJxK4vKoMU4pw="
     - compiler: clang
 before_install:
-  - test "$COVERAGE" = "Y" && pip install --user cpp-coveralls || echo "Skip coveralls for non-gcc builds"
+  - test "$COVERAGE" = "Y" && pip install --user cpp-coveralls || echo "Coveralls reporting skipped"
 after_success:
-  - test "$COVERAGE" = "Y" && coveralls --exclude testparse.cpp || echo "Skip coveralls for non-gcc builds"
+  - test "$COVERAGE" = "Y" && coveralls --exclude testparse.cpp || echo "Coveralls reporting skipped"
