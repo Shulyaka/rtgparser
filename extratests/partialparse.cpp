@@ -17,7 +17,7 @@ bool debug=false;
 int main(void)
 try
 {
-	string data("../tests/mast_moneysend");
+	char data[] = "../tests/mast_moneysend";
 	field message("../formats/fields_mast.frm", "");
 	string msgbuf;
 	size_t msglen=0;
@@ -28,7 +28,7 @@ try
 
 	std::ifstream infile(data);
 	if(!infile)
-		err(4, "Cannot open file %s", data.c_str());
+		err(4, "Cannot open file %s", data);
 
 	msgbuf.assign(std::istreambuf_iterator<char>(infile), std::istreambuf_iterator<char>());
 
