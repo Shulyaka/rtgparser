@@ -87,7 +87,7 @@ class fldformat
 	fldformat(const std::string &filename);
 	fldformat(const fldformat&);
 	~fldformat(void);
-	void print_format(std::string prefix="");
+	void print_format(std::string prefix="") const;
 	void clear(void);
 	bool empty(void) const;
 	unsigned int load_format(const std::string &filename);
@@ -157,10 +157,11 @@ class field
 
 	field(const std::string &str=""); //TODO: add more constructors
 	field(const fldformat *frm, const std::string &str="");
-	field(const std::string &filename, const std::string &str="");
+	field(const std::string &filename, const std::string &str);
 	field(const field&);
 	~field(void);
 	void print_message(std::string prefix="") const;
+	inline void print_format(std::string prefix="") const {frm->print_format(prefix);};
 	void clear(void);
 	bool empty(void) const;
 	void set_frm(const fldformat* firstfrm, const fldformat* altfrm=NULL);

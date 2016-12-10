@@ -16,7 +16,7 @@ size_t field::parse(const char *s, size_t n)
 {
 	field message(firstfrm);
 
-	if(!s || !n)
+	if(!s)
 		throw invalid_argument("Empty input\n");
 
 	size_t parsedlength=message.parse_field(s, n);
@@ -285,8 +285,8 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 
 				for(; pos!=maxlength;)
 				{
-					if(pos==flength+lenlen) // Some subfields are missing or canceled by bitmap
-						break; //TODO: Check if parsed all bitmapped fields
+					if(pos==flength+lenlen) // Some subfields are missing or canceled by bitmap, but we are precisely on the boundary of the field length
+						break;
 
 					if(frm->dataFormat==fldformat::fld_tlv) // subfield number is encoded as a tag name
 					{
@@ -459,11 +459,29 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 					}
 				}
 
-				if(!parse_failed && pos!=flength+lenlen)
+				if(!parse_failed)
 				{
-					if(debug)
-						printf("Error: Not enough subfield formats (%lu, %lu) for %s\n", (unsigned long)pos, (unsigned long)flength, frm->get_description().c_str());
-					parse_failed=1;
+					if(pos!=flength+lenlen)
+					{
+						if(debug)
+							printf("Error: Not enough subfield formats (%lu, %lu) for %s\n", (unsigned long)pos, (unsigned long)flength, frm->get_description().c_str());
+						parse_failed=1;
+					}
+					else if(frm->lengthFormat==fldformat::fll_unknown && frm->hasBitmap!=-1)
+					{
+						if(bitmap_start==-1)
+							throw need_more_data(pos+1, "This field has a bitmap subfield which we hasn't read yet");
+
+						//Check if parsed all bitmapped fields
+						for(size_t i=0; i<sf(bitmap_start).data.length(); i++)
+							if(sf(bitmap_start).data[i]=='1' && bitmap_start+i+1>(size_t)curnum)
+							{
+								if(debug)
+									printf("Field %ld was not parsed yet\n", bitmap_start+i+1);
+								throw need_more_data(pos+1, "The bitmap defines a field that we hasn't read yet");
+							}
+					}
+
 				}
 
 				if(parse_failed)

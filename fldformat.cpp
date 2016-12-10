@@ -146,7 +146,7 @@ void fldformat::moveFrom(fldformat &from)
 	from.clear();
 }
 
-void fldformat::print_format(string numprefix)
+void fldformat::print_format(string numprefix) const
 {
 	if(!numprefix.empty())
 		printf("%s\t", numprefix.c_str());
@@ -257,7 +257,7 @@ void fldformat::print_format(string numprefix)
 		case fld_subfields:
 		case fld_bcdsf:
 		case fld_tlv:
-			for(map<int,fldformat>::iterator i=subfields.begin(); i!=subfields.end(); ++i)
+			for(map<int,fldformat>::const_iterator i=subfields.begin(); i!=subfields.end(); ++i)
 				i->second.print_format((numprefix.empty() ? "" : numprefix + ".") + (i->first==-1? "*" : to_string(i->first)));
 			break;
 		default:
