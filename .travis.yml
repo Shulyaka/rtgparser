@@ -13,7 +13,7 @@ matrix:
   include:
     - compiler: gcc
       env:
-        - COVERAGE=Y
+        - COVERAGE=${COVERALLS_REPO_TOKEN:+Y}
     - compiler: clang
       env:
         - COVERITY_SCAN_BRANCH_PATTERN=${COVERITY_SCAN_BRANCH_PATTERN}_disabled

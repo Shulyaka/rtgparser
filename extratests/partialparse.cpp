@@ -12,7 +12,11 @@
 
 using namespace std;
 
+#ifdef DEBUG
+bool debug=true;
+#else
 bool debug=false;
+#endif
 
 int main(void)
 try

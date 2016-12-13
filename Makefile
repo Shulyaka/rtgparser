@@ -1,7 +1,13 @@
-CFLAGS+=-ggdb -Wall
 ifeq ($(COVERAGE),Y)
-	CFLAGS+=--coverage -O0
+	CFLAGS+=--coverage
 	LDFLAGS+=--coverage
+	DEBUG=Y
+endif
+
+ifeq ($(DEBUG),Y)
+	CFLAGS+=-ggdb -O0 -Wall -DDEBUG
+else
+	CFLAGS+=-Wall
 endif
 
 .PHONY: clean all tests extratests
