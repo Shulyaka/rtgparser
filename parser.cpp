@@ -477,7 +477,7 @@ size_t field::parse_field_alt(const char *buf, size_t maxlength)
 							if(sf(bitmap_start).data[i]=='1' && bitmap_start+i+1>(size_t)curnum)
 							{
 								if(debug)
-									printf("Field %ld was not parsed yet\n", (unsigned long)bitmap_start+i+1);
+									printf("Field %lu was not parsed yet\n", (unsigned long)(bitmap_start+i+1));
 								throw need_more_data(pos+1, "The bitmap defines a field that we hasn't read yet");
 							}
 					}
