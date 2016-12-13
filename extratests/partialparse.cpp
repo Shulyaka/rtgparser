@@ -21,11 +21,8 @@ bool debug=false;
 int main(void)
 try
 {
-	char data[] = "../tests/mast_moneysend";
+	const char data[] = "../tests/mast_moneysend";
 	field message("../formats/fields_mast.frm", "");
-	string msgbuf;
-	size_t msglen=0;
-	size_t msglen1=0;
 
 	if(debug)
 		message.print_format();
@@ -34,19 +31,19 @@ try
 	if(!infile)
 		err(4, "Cannot open file %s", data);
 
-	msgbuf.assign(std::istreambuf_iterator<char>(infile), std::istreambuf_iterator<char>());
+	std::string msgbuf((std::istreambuf_iterator<char>(infile)), (std::istreambuf_iterator<char>()));
 
 	infile.close();
 
-	msglen1=msgbuf.length();
+	size_t msglen1=msgbuf.length();
 
 	try
 	{
-		for(msglen=0; msglen<msglen1; msglen++)
+		for(size_t msglen=0; msglen<msglen1; msglen++)
 			try
 			{
 				if(debug)
-					printf("Parsing message with length %ld...\n", (unsigned long)msglen);
+					printf("Parsing message with length %lu...\n", (unsigned long)msglen);
 
 				message.parse(msgbuf.c_str(), msglen);
 				message.print_message();
@@ -55,7 +52,7 @@ try
 			catch(const need_more_data& e)
 			{
 				if(debug)
-					printf("Requested %ld bytes. Actual length: %ld.\n", (unsigned long)e.howmuch(), (unsigned long)msglen1);
+					printf("Requested %lu bytes. Actual length: %lu.\n", (unsigned long)e.howmuch(), (unsigned long)msglen1);
 
 				if(e.howmuch()<=msglen || e.howmuch() > msglen1)
 					throw out_of_range("Requested length is out of allowed range");

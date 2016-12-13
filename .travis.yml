@@ -7,7 +7,7 @@ addons:
       description: "Binary format parser"
     notification_email: shulyaka@gmail.com
     build_command_prepend: "make clean"
-    build_command: "make"
+    build_command: "make DEBUG=Y"
     branch_pattern: coverity_scan
 matrix:
   include:
