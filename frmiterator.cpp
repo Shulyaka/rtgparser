@@ -75,7 +75,7 @@ frmiterator<ITPAR>& frmiterator<ITPAR>::operator=(const frmiterator<ITPAR> &othe
 template<ITMPL>
 bool frmiterator<ITPAR>::operator!=(frmiterator<ITPAR> const &other) const
 {
-	return it!=other.it || curnum!=other.curnum;
+	return !(*this==other);//it!=other.it || curnum!=other.curnum;
 }
 
 template<ITMPL>

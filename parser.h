@@ -92,6 +92,9 @@ class fldformat
 	bool empty(void) const;
 	unsigned int load_format(const std::string &filename);
 	fldformat& operator= (const fldformat &from);
+	int compare(const fldformat&) const;
+	inline bool operator==(const fldformat& other) const {return !compare(other);};
+	inline bool operator!=(const fldformat& other) const {return !(*this==other);};
 	void moveFrom(fldformat &from);
 	inline fldformat *get_altformat(void) const {return altformat;};
 	inline const std::string& get_description(void) const {return description;};
@@ -404,6 +407,16 @@ class frmiterator: public std::iterator<std::bidirectional_iterator_tag, std::pa
 	operator frmiterator<iterator_type_const, reference_type_const, iterator_type_const, reference_type_const, iterator_type_nonconst, reference_type_nonconst>(void) const;
 };
 
+inline bool operator!=(const fldformat::iterator i, const fldformat::const_iterator j)
+{
+	return j!=i;
+}
+
+inline bool operator==(const fldformat::iterator i, const fldformat::const_iterator j)
+{
+	return j==i;
+}
+
 template<typename iterator_type, typename reference_type, typename map_type>
 class flditerator: public std::iterator<std::bidirectional_iterator_tag, std::pair<int,field> >
 {
@@ -429,6 +442,16 @@ class flditerator: public std::iterator<std::bidirectional_iterator_tag, std::pa
 	friend class flditerator<std::map<int,int>::iterator, std::pair<const int,field>, std::map<int,field> >;
 	operator field::const_iterator(void) const {return field::const_iterator(it, *subfields);};
 };
+
+inline bool operator!=(const field::iterator i, const field::const_iterator j)
+{
+	return j!=i;
+}
+
+inline bool operator==(const field::iterator i, const field::const_iterator j)
+{
+	return j==i;
+}
 
 class need_more_data: public std::overflow_error
 {

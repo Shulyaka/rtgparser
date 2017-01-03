@@ -146,6 +146,70 @@ void fldformat::moveFrom(fldformat &from)
 	from.clear();
 }
 
+int fldformat::compare(const fldformat& other) const
+{
+	if(dataFormat!=other.dataFormat)
+		return dataFormat-other.dataFormat;
+	if(lengthFormat!=other.lengthFormat)
+		return lengthFormat-other.lengthFormat;
+	if(maxLength!=other.maxLength)
+		return maxLength-other.maxLength;
+	if(lengthLength!=other.lengthLength)
+		return lengthLength-other.lengthLength;
+	if(addLength!=other.addLength)
+		return addLength-other.addLength;
+	if(dataFormat==fld_tlv)
+	{
+		if(tagFormat!=other.tagFormat)
+			return tagFormat-other.tagFormat;
+		if(tagLength!=other.tagLength)
+			return tagLength-other.tagLength;
+	}
+	if((dataFormat==fld_bcdl || dataFormat==fld_bcdr || dataFormat==fld_bcdsf) && fillChar!=other.fillChar)
+		return fillChar-other.fillChar;
+
+	if(dataFormat==fld_subfields || dataFormat==fld_bcdsf || dataFormat==fld_tlv)
+	{
+		map<int,fldformat>::const_iterator i, j;
+		for(i=subfields.begin(), j=other.subfields.begin(); i!=subfields.end() && j!=other.subfields.end(); ++i, ++j)
+		{
+			if(i->first<j->first)
+				return 1;
+			if(j->first<i->first)
+				return -1;
+			int r=i->second.compare(j->second);
+			if(r)
+				return r;
+		}
+		if(i!=subfields.end() || j!=other.subfields.end())
+		{
+			if(i==subfields.end())
+				return 1;
+			if(j==other.subfields.end())
+				return -1;
+		}
+
+		if(hasBitmap!=other.hasBitmap)
+			return hasBitmap-other.hasBitmap;
+	}
+	else if(data!=other.data)
+		return data.compare(other.data);
+
+	if(altformat || other.altformat)
+	{
+		if(!altformat)
+			return 1;
+
+		if(!other.altformat)
+			return -1;
+
+		return altformat->compare(*other.altformat);
+	}
+	//Intentionally not comparing description
+
+	return 0;
+}
+
 void fldformat::print_format(string numprefix) const
 {
 	if(!numprefix.empty())
@@ -705,6 +769,14 @@ void fldformat::parseFormat(const char *format, map<string,fldformat> &orphans)
 		else if(format[i]=='R')
 			i++;
 
+		if(format[i]=='0'||format[i]=='F')
+		{
+			fillChar=format[i];
+			i++;
+		}
+	}
+	else if(dataFormat==fld_bcdsf)
+	{
 		if(format[i]=='0'||format[i]=='F')
 		{
 			fillChar=format[i];
