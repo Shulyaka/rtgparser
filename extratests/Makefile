@@ -1,3 +1,6 @@
+OLDCFLAGS:=${CFLAGS}
+OLDLDFLAGS:=${LDFLAGS}
+
 ifeq ($(COVERAGE),Y)
 	CFLAGS+=--coverage
 	LDFLAGS+=--coverage
@@ -26,7 +29,7 @@ tests: $(patsubst %.cpp,%.test,$(wildcard *.cpp))
 		${CXX} -c $< ${CFLAGS}
 
 ../libparser.a:
-		make -C .. libparser.a
+		CFLAGS="${OLDCFLAGS}" LDFLAGS="${OLDLDFLAGS}" make -C .. libparser.a
 
 run: tests
 		@for i in `ls *.test`; do echo "./$$i >/dev/null"; ./$$i >/dev/null || exit $$?; done

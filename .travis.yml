@@ -26,4 +26,4 @@ env:
 before_install:
   - test "$COVERAGE" = "Y" && pip install --user cpp-coveralls || echo "Coveralls reporting skipped"
 after_success:
-  - test "$COVERAGE" = "Y" && coveralls --exclude testparse.cpp --exclude extratests/ || echo "Coveralls reporting skipped"
+  - test "$COVERAGE" = "Y" && coveralls --exclude testparse.cpp --exclude extratests/ --exclude /usr/include/ || echo "Coveralls reporting skipped"
