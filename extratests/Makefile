@@ -1,23 +1,8 @@
-OLDCFLAGS:=${CFLAGS}
-OLDLDFLAGS:=${LDFLAGS}
-
-CFLAGS+=-std=gnu++11
-
-ifeq ($(COVERAGE),Y)
-	CFLAGS+=--coverage
-	LDFLAGS+=--coverage
-	DEBUG=Y
-endif
-
-ifeq ($(DEBUG),Y)
-	CFLAGS+=-ggdb -O0 -Wall -DDEBUG
-else
-	CFLAGS+=-Wall
-endif
+include ../variables.mk
 
 .PHONY: clean all tests run
 
-CFLAGS+=-I ..
+CXXFLAGS+=-I ..
 LDFLAGS+=-L .. -l parser
 
 all: tests run
@@ -28,10 +13,10 @@ tests: $(patsubst %.cpp,%.test,$(wildcard *.cpp))
 		${CXX} $< -o $@ ${LDFLAGS}
 
 %.o: %.cpp ../parser.h
-		${CXX} -c $< ${CFLAGS}
+		${CXX} -c $< ${CXXFLAGS} ${CPPFLAGS}
 
 ../libparser.a:
-		CFLAGS="${OLDCFLAGS}" LDFLAGS="${OLDLDFLAGS}" make -C .. libparser.a
+		CXXFLAGS="${OLDCXXFLAGS}" LDFLAGS="${OLDLDFLAGS}" make -C .. libparser.a
 
 run: tests
 		@for i in `ls *.test`; do echo "./$$i >/dev/null"; ./$$i >/dev/null || exit $$?; done
