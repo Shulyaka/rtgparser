@@ -15,7 +15,7 @@ matrix:
             name: "Shulyaka/rtgparser"
             description: "Binary format parser"
           notification_email: shulyaka@gmail.com
-          build_command_prepend: "make clean"
+          build_command_prepend: "cov-configure --comptype gcc --compiler \"$CXX\" --template && export COVERAGE=N"
           build_command: "make DEBUG=Y"
           branch_pattern: coverity_scan
       env:
