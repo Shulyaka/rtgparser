@@ -45,36 +45,36 @@ size_t field::get_flength(void)
 			if(frm->dataFormat==fldformat::fld_tlv)
 				taglength=frm->tagLength;
 
-			for(iterator i=begin(); i!=end(); ++i)
+			for(auto& i : *this)
 			{
 				if(pos==frm->maxLength+lenlen)
 					break;
 
-				if(bitmap_found!=-1 && frm->sf(bitmap_found).dataFormat!=fldformat::fld_isobitmap && frm->sf(bitmap_found).maxLength < (unsigned int)(i->first-bitmap_found)) //TODO: check this condition
+				if(bitmap_found!=-1 && frm->sf(bitmap_found).dataFormat!=fldformat::fld_isobitmap && frm->sf(bitmap_found).maxLength < (unsigned int)(i.first-bitmap_found)) //TODO: check this condition
 					break;
 
-				if(!frm->sfexist(i->first))
+				if(!frm->sfexist(i.first))
 					throw("Subfield format does not exist");
 
-				if(bitmap_found==-1 || frm->sf(bitmap_found).dataFormat==fldformat::fld_isobitmap || frm->sf(bitmap_found).maxLength > (unsigned int)(i->first-bitmap_found-1)) //TODO: change frm->sf(*) into i->second.frm or something
+				if(bitmap_found==-1 || frm->sf(bitmap_found).dataFormat==fldformat::fld_isobitmap || frm->sf(bitmap_found).maxLength > (unsigned int)(i.first-bitmap_found-1)) //TODO: change frm->sf(*) into i.second.frm or something
 				{
-					if(frm->dataFormat!=fldformat::fld_tlv && frm->sf(i->first).dataFormat==fldformat::fld_isobitmap)
+					if(frm->dataFormat!=fldformat::fld_tlv && frm->sf(i.first).dataFormat==fldformat::fld_isobitmap)
 					{
-						bitmap_found=i->first;
-						sflen=((subfields.rbegin()->first - i->first)/64+1)*8;
+						bitmap_found=i.first;
+						sflen=((subfields.rbegin()->first - i.first)/64+1)*8;
 					}
-					else if(frm->dataFormat!=fldformat::fld_tlv && frm->sf(i->first).dataFormat==fldformat::fld_bitmap)
+					else if(frm->dataFormat!=fldformat::fld_tlv && frm->sf(i.first).dataFormat==fldformat::fld_bitmap)
 					{
-						bitmap_found=i->first;
-						sflen=(frm->sf(i->first).maxLength+7)/8;
+						bitmap_found=i.first;
+						sflen=(frm->sf(i.first).maxLength+7)/8;
 					}
-					else if(i->second.empty())
+					else if(i.second.empty())
 						continue;
 					else
-						sflen=i->second.get_blength();
+						sflen=i.second.get_blength();
 					
 					if(frm->dataFormat==fldformat::fld_tlv && frm->tagFormat==fldformat::flt_ber)
-						taglength=i->first>0xFF?2:1;
+						taglength=i.first>0xFF?2:1;
 
 					pos+=taglength+sflen;
 				}
@@ -369,36 +369,36 @@ size_t field::build_field_alt(string &buf)
 			if(frm->dataFormat==fldformat::fld_tlv)
 				taglength=frm->tagLength;
 
-			for(iterator i=begin(); i!=end(); ++i)	//TODO: implement a stack and go back if build failed
+			for(auto& i : *this)	//TODO: implement a stack and go back if build failed
 			{
-				if(bitmap_found!=-1 && frm->sf(bitmap_found).dataFormat!=fldformat::fld_isobitmap && frm->sf(bitmap_found).maxLength < i->first-(unsigned int)bitmap_found)	//TODO: suspicious condition
+				if(bitmap_found!=-1 && frm->sf(bitmap_found).dataFormat!=fldformat::fld_isobitmap && frm->sf(bitmap_found).maxLength < i.first-(unsigned int)bitmap_found)	//TODO: suspicious condition
 					break;
 
-				if(!frm->sfexist(i->first)) //TODO: Should we remove this?
+				if(!frm->sfexist(i.first)) //TODO: Should we remove this?
 					throw invalid_argument("No format for subfield");
 
-				if(bitmap_found==-1 || frm->sf(bitmap_found).dataFormat==fldformat::fld_isobitmap || frm->sf(bitmap_found).maxLength > i->first-(unsigned int)bitmap_found-1)
+				if(bitmap_found==-1 || frm->sf(bitmap_found).dataFormat==fldformat::fld_isobitmap || frm->sf(bitmap_found).maxLength > i.first-(unsigned int)bitmap_found-1)
 				{
-					if(frm->dataFormat!=fldformat::fld_tlv && frm->sf(i->first).dataFormat==fldformat::fld_isobitmap)
+					if(frm->dataFormat!=fldformat::fld_tlv && frm->sf(i.first).dataFormat==fldformat::fld_isobitmap)
 					{
-						bitmap_found=i->first;
+						bitmap_found=i.first;
 						if(frm->dataFormat!=fldformat::fld_bcdsf)
-							sflen=build_isobitmap(buf, i->first);
+							sflen=build_isobitmap(buf, i.first);
 						else
-							sflen=build_isobitmap(bcd, i->first);
+							sflen=build_isobitmap(bcd, i.first);
 					}
-					else if(frm->dataFormat!=fldformat::fld_tlv && frm->sf(i->first).dataFormat==fldformat::fld_bitmap)
+					else if(frm->dataFormat!=fldformat::fld_tlv && frm->sf(i.first).dataFormat==fldformat::fld_bitmap)
 					{
-						bitmap_found=i->first;
+						bitmap_found=i.first;
 						if(frm->dataFormat!=fldformat::fld_bcdsf)
-							sflen=build_bitmap(buf, i->first);
+							sflen=build_bitmap(buf, i.first);
 						else
-							sflen=build_bitmap(bcd, i->first);
+							sflen=build_bitmap(bcd, i.first);
 					}
-					else if(i->second.empty())
+					else if(i.second.empty())
 					{
 						if(debug)
-							printf("Warning: Empty subfield %d\n", i->first);
+							printf("Warning: Empty subfield %d\n", i.first);
 						continue;
 					}
 					else
@@ -408,7 +408,7 @@ size_t field::build_field_alt(string &buf)
 							switch(frm->tagFormat)
 							{
 								case fldformat::flt_ebcdic:
-									lengthbuf=to_string(i->first);
+									lengthbuf=to_string(i.first);
 									if(lengthbuf.length()>taglength)
 										throw invalid_argument("TLV tag number is too big");
 
@@ -426,7 +426,7 @@ size_t field::build_field_alt(string &buf)
 									break;
 
 								case fldformat::flt_bcd:
-									lengthbuf=to_string(i->first);
+									lengthbuf=to_string(i.first);
 									if(lengthbuf.length()>taglength*2)
 										throw invalid_argument("TLV tag number is too big");
 
@@ -443,7 +443,7 @@ size_t field::build_field_alt(string &buf)
 									break;
 
 								case fldformat::flt_ber:
-									taglength=i->first>0xFF?2:1;
+									taglength=i.first>0xFF?2:1;
 									//no break intentionally
 								case fldformat::flt_bin:
 									if(frm->dataFormat!=fldformat::fld_bcdsf)
@@ -452,7 +452,7 @@ size_t field::build_field_alt(string &buf)
 											buf.append(taglength-4, '\0');
 
 										for(size_t j=0; j<(taglength>4?4:taglength); j++)
-											buf.push_back(((unsigned char *)(&(i->first)))[(taglength>4?4:taglength)-j-1]);  //TODO: htonl()
+											buf.push_back(((unsigned char *)(&(i.first)))[(taglength>4?4:taglength)-j-1]);  //TODO: htonl()
 									}
 									else
 									{
@@ -460,12 +460,12 @@ size_t field::build_field_alt(string &buf)
 											bcd.append(taglength-4, '\0');
 
 										for(size_t j=0; j<(taglength>4?4:taglength); j++)
-											bcd.push_back(((unsigned char *)(&(i->first)))[(taglength>4?4:taglength)-j-1]);  //TODO: htonl()
+											bcd.push_back(((unsigned char *)(&(i.first)))[(taglength>4?4:taglength)-j-1]);  //TODO: htonl()
 									}
 									break;
 
 								case fldformat::flt_ascii:
-									lengthbuf=to_string(i->first);
+									lengthbuf=to_string(i.first);
 									if(lengthbuf.length()>taglength)
 										throw invalid_argument("TLV tag number is too big");
 
@@ -490,9 +490,9 @@ size_t field::build_field_alt(string &buf)
 						}
 
 						if(frm->dataFormat!=fldformat::fld_bcdsf)
-							sflen=i->second.build_field(buf);
+							sflen=i.second.build_field(buf);
 						else
-							sflen=i->second.build_field(bcd);
+							sflen=i.second.build_field(bcd);
 					}
 					
 					pos+=sflen;

@@ -68,7 +68,6 @@ class fldformat
 	inline fldformat *get_lastaltformat(void) {fldformat *last; for(last=this; last->altformat!=NULL; ) last=last->altformat; return last;};
 	void parseFormat(const char*, std::map<std::string,fldformat> &orphans);
 	fldformat* get_by_number(const char *number, std::map<std::string,fldformat> &orphans, bool isBitmap=false);
-	static std::string to_string(unsigned int);
 
 	friend class field;
 
@@ -140,7 +139,6 @@ class field
 	static size_t build_hex(const std::string::const_iterator&, std::string&, size_t, char);
 	static size_t build_bcdl(const std::string::const_iterator&, std::string&, size_t, char);
 	static size_t build_bcdr(const std::string::const_iterator&, std::string&, size_t, char);
-	static std::string to_string(unsigned int);
 
 	public:
 	typedef flditerator<std::map<int,int>::iterator, std::pair<const int,field>, std::map<int,field> > iterator;

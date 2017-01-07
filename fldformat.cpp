@@ -1,8 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <sstream>
-#include <iostream>
 #include <fstream>
 #include <cerrno>
 #include "parser.h"
@@ -104,8 +102,8 @@ fldformat& fldformat::operator= (const fldformat &from)
 	data=from.data;
 
 	subfields=from.subfields;
-	for(map<int,fldformat>::iterator i=subfields.begin(); i!=subfields.end(); ++i)
-		i->second.parent=this;
+	for(auto& i : subfields)
+		i.second.parent=this;
 
 	if(from.altformat)
 		altformat=new fldformat(*from.altformat);
@@ -135,8 +133,8 @@ void fldformat::moveFrom(fldformat &from)
 	fillChar=from.fillChar;
 	data=from.data;
 	subfields=from.subfields;
-	for(map<int,fldformat>::iterator i=subfields.begin(); i!=subfields.end(); ++i)
-		i->second.parent=this;
+	for(auto& i : subfields)
+		i.second.parent=this;
 
 	altformat=from.altformat;
 	hasBitmap=from.hasBitmap;
@@ -321,8 +319,8 @@ void fldformat::print_format(string numprefix) const
 		case fld_subfields:
 		case fld_bcdsf:
 		case fld_tlv:
-			for(map<int,fldformat>::const_iterator i=subfields.begin(); i!=subfields.end(); ++i)
-				i->second.print_format((numprefix.empty() ? "" : numprefix + ".") + (i->first==-1? "*" : to_string(i->first)));
+			for(auto& i : subfields)
+				i.second.print_format((numprefix.empty() ? "" : numprefix + ".") + (i.first==-1? "*" : to_string(i.first)));
 			break;
 		default:
 			break;
@@ -800,7 +798,7 @@ void fldformat::erase(void)
 	if(!parent)
 		throw invalid_argument("Cannot remove field without parent");
 
-	for(map<int,fldformat>::iterator i=parent->subfields.begin(); i!=parent->subfields.end(); ++i)
+	for(auto i=parent->subfields.begin(); i!=parent->subfields.end(); ++i)
 		if(&i->second==this)
 		{
 			parent->subfields.erase(i);
@@ -821,13 +819,6 @@ const fldformat& fldformat::sf(int n) const
 	}
 
 	return i->second;
-}
-
-string fldformat::to_string(unsigned int n)
-{
-	ostringstream ss;
-	ss << n;
-	return ss.str();
 }
 
 fldformat::iterator fldformat::begin(void)

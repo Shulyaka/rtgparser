@@ -1,6 +1,5 @@
 #include <cstdio>
 #include <cstdlib> //for malloc(). TODO: Remove malloc()
-#include <sstream>
 #include <ctime>
 #include <vector>
 
@@ -212,9 +211,9 @@ void field::print_message(string numprefix) const
 		case fldformat::fld_subfields:
 		case fldformat::fld_bcdsf:
 		case fldformat::fld_tlv:
-			for(const_iterator i=begin(); i!=end(); ++i)
-				if(!i->second.empty())
-					i->second.print_message(numprefix + to_string(i->first) + ".");
+			for(auto& i : *this)
+				if(!i.second.empty())
+					i.second.print_message(numprefix + to_string(i.first) + ".");
 			break;
 		default:
 			break;
@@ -239,8 +238,8 @@ bool field::empty(void) const
 	if(subfields.empty())
 		return true;
 
-	for(const_iterator i=begin(); i!=end(); ++i)
-		if(i->second.frm && i->second.frm->dataFormat!=fldformat::fld_isobitmap && i->second.frm->dataFormat!=fldformat::fld_bitmap && !i->second.empty())
+	for(auto& i : *this)
+		if(i.second.frm && i.second.frm->dataFormat!=fldformat::fld_isobitmap && i.second.frm->dataFormat!=fldformat::fld_bitmap && !i.second.empty())
 			return false;
 
 	return true;
@@ -496,13 +495,6 @@ size_t field::strftime(size_t max, const char *format, const struct tm *tm)
 		free(strptr);
 
 	return count;
-}
-
-string field::to_string(unsigned int n)
-{
-	ostringstream ss;
-	ss << n;
-	return ss.str();
 }
 
 field::iterator field::begin(void)
