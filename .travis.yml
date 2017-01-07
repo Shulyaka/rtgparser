@@ -1,15 +1,6 @@
 language: cpp
 dist: trusty
 script: make extratests
-addons:
-  coverity_scan:
-    project:
-      name: "Shulyaka/rtgparser"
-      description: "Binary format parser"
-    notification_email: shulyaka@gmail.com
-    build_command_prepend: "make clean"
-    build_command: "make DEBUG=Y"
-    branch_pattern: coverity_scan
 matrix:
   include:
     - compiler: gcc
@@ -19,6 +10,14 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-6
+        coverity_scan:
+          project:
+            name: "Shulyaka/rtgparser"
+            description: "Binary format parser"
+          notification_email: shulyaka@gmail.com
+          build_command_prepend: "make clean"
+          build_command: "make DEBUG=Y"
+          branch_pattern: coverity_scan
       env:
         - COMPILER=g++-6
         - COVERAGE=${COVERALLS_REPO_TOKEN:+Y}
@@ -27,7 +26,6 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-#            - llvm-toolchain-trusty-3.8
           packages:
             - clang-3.8
             - libstdc++-6-dev
