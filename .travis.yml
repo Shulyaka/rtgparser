@@ -30,6 +30,7 @@ matrix:
 #            - llvm-toolchain-trusty-3.8
           packages:
             - clang-3.8
+            - libstdc++-6-dev
       env:
         - COMPILER=clang++-3.8
         - COVERITY_SCAN_BRANCH_PATTERN=${COVERITY_SCAN_BRANCH_PATTERN}_disabled
