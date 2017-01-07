@@ -1,6 +1,8 @@
 OLDCFLAGS:=${CFLAGS}
 OLDLDFLAGS:=${LDFLAGS}
 
+CFLAGS+=-std=gnu++11
+
 ifeq ($(COVERAGE),Y)
 	CFLAGS+=--coverage
 	LDFLAGS+=--coverage
