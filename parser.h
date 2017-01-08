@@ -11,7 +11,9 @@ extern bool debug;
 class fldformat;
 class field;
 
-template<typename iterator_type=typename std::map<int,fldformat>::iterator, typename reference_type=typename std::pair<const int,fldformat>, typename iterator_type_const=typename std::map<int,fldformat>::const_iterator, typename reference_type_const=const reference_type, typename iterator_type_nonconst=iterator_type, typename reference_type_nonconst=reference_type>
+template<typename iterator_type, typename reference_type,
+	typename iterator_type_const=std::map<int,fldformat>::const_iterator, typename reference_type_const=const std::pair<const int,fldformat>,
+	typename iterator_type_nonconst=std::map<int,fldformat>::iterator, typename reference_type_nonconst=std::pair<const int,fldformat>>
 class frmiterator;
 
 template<typename iterator_type, typename reference_type, typename map_type>
@@ -72,8 +74,8 @@ class fldformat
 	friend class field;
 
 	public:
-	typedef frmiterator<> iterator;
-	typedef frmiterator<std::map<int,fldformat>::const_iterator, const std::pair<const int, fldformat>, std::map<int,fldformat>::const_iterator, const std::pair<const int, fldformat>, std::map<int,fldformat>::iterator, std::pair<const int, fldformat> > const_iterator;
+	typedef frmiterator<std::map<int,fldformat>::iterator, std::pair<const int,fldformat>> iterator;
+	typedef frmiterator<std::map<int,fldformat>::const_iterator, const std::pair<const int, fldformat>> const_iterator;
 	iterator begin(void);
 	const_iterator begin(void) const;
 	iterator end(void);
