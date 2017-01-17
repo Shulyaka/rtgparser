@@ -41,6 +41,5 @@ before_install:
   - export CXX="$COMPILER"
   - ${CXX} --version
   - test "$COVERAGE" = "Y" && pip install --user cpp-coveralls || echo "Coveralls reporting skipped"
-  - apt-get --just-print upgrade
 after_success:
   - test "$COVERAGE" = "Y" && coveralls --exclude testparse.cpp --exclude extratests/ --exclude /usr/include/ || echo "Coveralls reporting skipped"
