@@ -31,6 +31,7 @@ matrix:
           packages:
             - clang-3.8
             - llvm-3.8-dev
+            - libstdc++-6-dev
       env:
         - COMPILER=clang++-3.8
 env:
