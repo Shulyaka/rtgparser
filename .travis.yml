@@ -30,7 +30,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang-3.8
-            - libstdc++-6-dev
+            - llvm-3.8-dev
       env:
         - COMPILER=clang++-3.8
 env:
