@@ -36,6 +36,7 @@ matrix:
         - COMPILER=clang++-3.8
 env:
   global:
+   - CFLAGS="$CFLAGS${CFLAGS:+ }-Werror"
    - CXXFLAGS="$CXXFLAGS${CXXFLAGS:+ }-Werror"
 before_install:
   - export CC="$COMPILER"
