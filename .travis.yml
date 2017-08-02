@@ -29,11 +29,11 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - clang-3.8
-            - llvm-3.8-dev
+            - clang-3.9
+            - llvm-3.9-dev
             - libstdc++-6-dev
       env:
-        - COMPILER=clang++-3.8
+        - COMPILER=clang++-3.9
 env:
   global:
    - CFLAGS="$CFLAGS${CFLAGS:+ }-Werror"
